@@ -1,98 +1,36 @@
-# Afeka Hiking Trails 2026 (מסלול טיולים אפקה 2026)
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-מערכת מלאה ומתקדמת לתכנון מסלולי טיול (טרקים ואופניים) המופעלת על ידי בינה מלאכותית (LLM) ושירותי מיקום אמיתיים בזמן אמת.
-הפרויקט נבנה במסגרת קורס פיתוח WEB, סמסטר א' 2026.
+## Getting Started
 
-## תיאור המערכת
-המערכת מאפשרת למשתמשים לתכנן טיולים מאפס ע"י הזנת יעד, סוג הטיול (רגלי/אופניים) ומשך הזמן (בימים).
-המערכת מפעילה בזמן אמת מודלי שפה לבחירת המשתמש (OpenAI או Google Gemini) על מנת לייצר מסלול הגיוני מבחינה גיאוגרפית. לאחר מכן, המסלול מעובד מול מגוון שירותי API חיצוניים כדי לספק חווית תכנון שלמה הכוללת מפות אינטראקטיביות, תחזית מזג אוויר ייעודית ותמונות יעד.
-
-### פיצ'רים מרכזיים:
-- **הרשמה והתחברות מאובטחת**: אימות משתמשים מלא באמצעות JWT (Access Token + Refresh Token).
-- **תכנון מסלול AI כפול**: אפשרות חלקה לבחור בין מנוע **OpenAI (GPT-4o)** לבין **Google Gemini (flash-preview)** ליצירת נקודות הציון והלו"ז, כולל תמיכה בהזנת מפתח API דינאמית מה-Client.
-- **עיבוד מסלול ריאלי מבוסס OSRM**: חישוב מסלולי הליכה (Foot) ורכיבה (Cycling) מדויקים בין הנקודות שה-AI בחר, יצירת פוליגונים והצגת נתוני מרחק מדויקים בק"מ.
-- **תצוגת מפה אינטראקטיבית**: סנכרון מלא של השרטוט על גבי מפות חינמיות באמצעות **React Leaflet**, המציגות את התוואי בצורה ויזואלית מרהיבה.
-- **חיזוי מזג אוויר אזורי**: משיכת תחזית נתוני מינימום/מקסימום דינאמית מ- **Open-Meteo** ל-3 ימים הקרובים, עבור נקודת הציון הראשונה במסלול.
-- **ייבוא תמונות אוטומטי**: מנגנון Web Scraping חכם המושך תמונה מייצגת של היעד ישירות מ-Google Image Search.
-- **היסטוריית טיולים חכמה**: שמירת כל הטיולים למסד הנתונים (MongoDB). מסך ה-History מציג כרטיסיות עם סיכום הטיול, ומאפשר לחיצה לפתיחת דף Single Trip View המכיל את המפה, הלו"ז המלא והתמונה.
-
----
-
-## ארכיטקטורה וטכנולוגיות
-
-הפרויקט בנוי בארכיטקטורת **Client-Server** מודרנית:
-
-### Backend (Server)
-- **Node.js & Express**: שרת ה-API.
-- **MongoDB & Mongoose**: מסד נתונים NoSQL לשמירת סכמות משתמשים וטיולים (כולל מערך ה-Itinerary).
-- **Authentication**: `bcryptjs` (הצפנה) ו-`jsonwebtoken` (ניהול סשנים).
-- **API Packages**: `@google/generative-ai` ו-`openai` לתקשורת מול שרתי ה-AI. `axios` לבקשות OSRM, תחזיות וסקרייפינג.
-
-### Frontend (Client)
-- **Next.js 16 (App Router)**: פריימוורק React מתקדם כולל Server/Client Components.
-- **Tailwind CSS**: עיצוב רספונסיבי מהיר ונקי.
-- **React Leaflet**: רכיב תצוגת מפות מתקדם המרונדר ללא SSR (Dynamic Import).
-- **Axios**: לתקשורת מול ה-Backend (כולל Interceptors מותאמים לניהול טוקנים).
-
----
-
-## הוראות התקנה והרצה
-
-### דרישות מקדימות
-- Node.js מותקן.
-- MongoDB רץ (מקומי על Port 27017, אלא אם מוגדר ב-ENV URI אחר).
-
-### 1. התקנת והרצת השרת (Server)
-פתח טרמינל בתיקיית `server` והרץ:
+First, run the development server:
 
 ```bash
-cd server
-npm install
-node index.js
-```
-*השרת ירוץ בכתובת: `http://localhost:5000`*
-
-### 2. התקנת והרצת הקליינט (Client)
-פתח טרמינל חדש בתיקיית `client` והרץ:
-
-```bash
-cd client
-npm install
 npm run dev
-```
-*האתר יעלה בכתובת: `http://localhost:3000`*
-
----
-
-## משתני סביבה (.env)
-
-בתיקיית `server`, ניתן ליצור קובץ `.env` עם הערכים הבאים (למרות שהמערכת תומכת גם בהזנת קוד API מה-UI):
-
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/afeka_trails
-JWT_SECRET=my_super_secret_key
-JWT_REFRESH_SECRET=my_super_refresh_secret
-OPENAI_API_KEY=sk-proj-...
-GEMINI_API_KEY=AIzaSy...
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## מדריך גישה למשתמש
-1.  **הרשמה**: היכנס לדף Register וצור קורדינטות חשבון.
-2.  **התחברות**: בצע Login.
-3.  **תכנון טיול**:
-    - נווט ל- "Plan Trip".
-    - הכנס מדינה, אזור חופשי, סוג הטיול, ואורך בימים.
-    - **בחר ב-AI Provider**: לחץ על כפתור הרדיו המתאים (OpenAI / Gemini) והזן מפתח במידת הצורך.
-    - לחץ **Generate Trip**. המתן מספר שניות לקסם לקרות (קריאות API מרובות).
-    - צפה בתוצאה המרהיבה, ולחץ **Approve & Save** לשמירה למסד הנתונים.
-4.  **היסטוריה**: בדף "My Trips" יופיעו הטיולים שהרכבת. לחיצה על כרטיסייה תוביל אותך לעמוד **Trip Details** מעוצב המכיל את המפה הנשמרת, מזג האוויר והלו"ז לפי ימים!
+You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
----
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-**פותח ע"י:** אנטוני מנביץ, עמית שלמה
-**מוגש ל:** מיכה
-**סמסטר א' 2026**
+## Learn More
 
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
